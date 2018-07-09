@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ToDoList-Yuqi Qin</title>
+	<link rel="stylesheet" type="text/css" href="ToDoList.css">
+	<script src="ToDoList.js"></script>
+</head>
+<body >
+	<header style="background-color:#484343">
+		<form class="head_form" action="javascript:showDoin()">
+			<label for="txtArea" class="lbtitle">ToDoList-Yuqi Qin</label>
+			<input type="text" name="txtArea" id="txtArea" placeholder="请输入文字，按回车提交">
+			<div class="timeArea">
+				<select id="year">
+<!-- 					<option >2017</option>
+					<option >2018</option>
+					<option >2019</option> -->
+				</select>
+				<span>年</span>
+				<select id="month">
+					<option >1</option>
+					<option >2</option>
+					<option >3</option>
+					<option >4</option>
+					<option >5</option>
+					<option >6</option>					
+					<option >7</option>
+					<option >8</option>
+					<option >9</option>					
+					<option >10</option>
+					<option >11</option>
+					<option >12</option>
+				</select>
+				<span>月</span>
+				<select id="day">
+					<option >1</option>
+					<option >2</option>
+					<option >3</option>
+					<option >4</option>
+					<option >5</option>
+					<option >6</option>					
+					<option >7</option>
+					<option >8</option>
+					<option >9</option>					
+					<option >10</option>
+					<option >11</option>
+					<option >12</option>
+					<option >13</option>
+					<option >14</option>
+					<option >15</option>
+					<option >16</option>					
+					<option >17</option>
+					<option >18</option>
+					<option >19</option>					
+					<option >20</option>
+					<option >21</option>
+					<option >22</option>
+					<option >23</option>
+					<option >24</option>
+					<option >25</option>
+					<option >26</option>					
+					<option >27</option>
+					<option >28</option>
+					<option >29</option>					
+					<option >30</option>
+					<option >31</option>
+				</select>
+				<span>日</span>
+				<select id="hour">
+					<option >1</option>
+					<option >2</option>
+					<option >3</option>
+					<option >4</option>
+					<option >5</option>
+					<option >6</option>					
+					<option >7</option>
+					<option >8</option>
+					<option >9</option>					
+					<option >10</option>
+					<option >11</option>
+					<option >12</option>
+					<option >13</option>
+					<option >14</option>
+					<option >15</option>
+					<option >16</option>					
+					<option >17</option>
+					<option >18</option>
+					<option >19</option>					
+					<option >20</option>
+					<option >21</option>
+					<option >22</option>
+					<option >23</option>
+					<option >24</option>
+				</select>	
+				<span>时</span>			
+			</div>
+		</form>
+	</header>
+	<div class="content">
+		<div class="doing">
+			<h2 class="tle">正在进行
+				<span id="num1">0</span>
+			</h2>
+			<ul id="doin">
+<!-- 				<li>
+					<input type="checkbox" class="check" id="1223">
+					<label for="1223"></label>
+					<span>asdjsasdfjklsadhfkak</span>
+					<span></span>
+					<span class="cancel">-</span>
+				</li> -->
+			</ul>
+		</div>
+		<div class="done">
+			<h2 class="tle">已经完成
+				<span id="num2">0</span>
+			</h2>
+			<ul id="done">
+			</ul>	
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+var now = new Date();
+var thisYear = now.getFullYear();
+var thisMonth = now.getMonth();
+var thisDay = now.getDate();
+var thisHour = now.getHours();
+
+var yearPos = document.getElementById('year');
+for(var i=0;i<3;i++){	//循环出现在的年份以及后2年
+	var newOpt = new Option(thisYear+i)
+	yearPos.add(newOpt);
+}
+document.getElementById('month').options[thisMonth].selected = true;
+document.getElementById('day').options[thisDay-1].selected = true;
+document.getElementById('hour').options[thisHour-1].selected = true;
+//从localstorage加载数据
+var data = loadDta();
+// console.log(data);
+for(var i=0;i<data.length;i++){
+	var node=document.createElement("LI");
+	//刷新页面时，读出已经完成数据
+	if(data[i].flag){   	
+		node.innerHTML="<input type='checkbox' class='check' id='"+ (data[i].id) +"' checked='checked'>"+
+					'<label for='+(data[i].id)+' onclick="chosen('+(data[i].id)+')"></label>'+
+					'<span id="p-'+(data[i].id)+'" onclick="edit('+(data[i].id)+')">'+(data[i].txtData)+'</span>'+
+					'<input class="ipt" id="e-'+(data[i].id)+'" onblur="qyq('+(data[i].id)+')">'+
+					'<span class="cancel" id=del'+(data[i].id)+' onclick="delDta('+(data[i].id)+');">-</span>'+
+					'<div class="time">期望完成时间：'+(data[i].wishTime)+'</div>';
+		document.getElementById("done").appendChild(node);
+	}else{		
+		//刷新页面时，读出正在进行数据
+		node.innerHTML="<input type='checkbox' class='check' id='"+ (data[i].id) +"'>"+
+					'<label for='+(data[i].id)+' onclick="chosen('+(data[i].id)+')"></label>'+
+					'<span id="p-'+(data[i].id)+'" onclick="edit('+(data[i].id)+')">'+(data[i].txtData)+'</span>'+
+					'<input class="ipt" id="e-'+(data[i].id)+'" onblur="qyq('+(data[i].id)+')">'+
+					'<span class="cancel" id=del'+(data[i].id)+' onclick="delDta('+(data[i].id)+');">-</span>'+
+					'<div class="time">期望完成时间：'+(data[i].wishTime)+'</div>';
+		document.getElementById("doin").appendChild(node);
+	}
+	//列表数量变化
+	changeNum();
+
+}
+isOverdue();
+</script>
+</html>
