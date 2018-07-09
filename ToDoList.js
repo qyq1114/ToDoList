@@ -7,9 +7,6 @@ function showDoin(){
 	var day = document.getElementById("day").value;
 	var hour = document.getElementById("hour").value;
 	var wishTime = new Date(year, month-1, day, hour);
-		console.log(now);
-
-	console.log(wishTime);
 	if(now.getFullYear()==wishTime.getFullYear()){
 		if(now.getMonth()<wishTime.getMonth()){
 			//正常
