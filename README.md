@@ -3,7 +3,8 @@
 
 ## 简介
 
-2017年学习完JavaScript基础知识完成的一个ToDoList
+- 2017年学习完JavaScript基础知识完成的一个ToDoList
+- 没有使用后台存储，使用了localstorage这个没有时间限制的数据存储。虽然localStorage中一般浏览器支持的是5M大小，但是当时自己做的练习，这个大小已经够用。
 
 ### 功能
 1. 输入文字，按回车提交
